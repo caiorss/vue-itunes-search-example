@@ -10,13 +10,14 @@
 
     Results: {{ data.resultCount }}
 
-    <div v-for="entry in data.results" v-bind:key="entry">
+    <div v-for="entry in results" v-bind:key="entry">
          <h3> {{ entry.collectionName }} </h3>
 
          Artist name: {{ entry.artistName }} <br>
          Collection: <a :href="entry.collectionViewUrl" target="_blank">{{ entry.collectionName }}</a>   <br> 
          Collection price: {{ entry.collectionPrice }} <br>
-         Genre: {{ entry.primaryGenreName }}
+         Genre: {{ entry.primaryGenreName }} <br>
+         Country: {{ entry.country }}
          <br>
          
          <img :src="entry.artworkUrl100" alt=""/>
@@ -87,6 +88,7 @@ export default defineComponent({
       return { 
             inputText: '' as string 
           , data: {} as ItunesTypes 
+          , results: [] as Result[]
         , 
     }}
 
@@ -99,6 +101,7 @@ export default defineComponent({
            let result = await request_get(url);
            console.log(result.data);
            this.data = result.data as ItunesTypes;
+           this.results = this.data.results as Result[];
       }
       , clear(){
           this.inputText = "";
@@ -118,5 +121,6 @@ export default defineComponent({
   #app {
       background: black;
       color: white;
+
   }
 </style>
