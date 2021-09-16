@@ -1,8 +1,12 @@
 <template>
 <div id="app">
     <h1>Itunes album Search / Itunes API</h1>
-    <p><input type="text" v-model="inputText" /></p>
-    <p><button @click="search()">Search</button></p>
+    <p><input type="text" v-on:keyup.enter="search()" v-model="inputText" /></p>
+    <br>
+    <button @click="search()">Search</button>
+    <button @click="clear()">Clear</button>
+
+    <hr>
 
     Results: {{ data.resultCount }}
 
@@ -30,6 +34,35 @@ interface RequestResult {
    data: JSON;
 }
 
+export interface ItunesTypes {
+  resultCount?: number;
+  results?: Result[];
+}
+
+export interface Result {
+  wrapperType: string;
+  collectionType: string;
+  artistId: number;
+  collectionId: number;
+  amgArtistId?: number;
+  artistName: string;
+  collectionName: string;
+  collectionCensoredName: string;
+  artistViewUrl: string;
+  collectionViewUrl: string;
+  artworkUrl60: string;
+  artworkUrl100: string;
+  collectionPrice: number;
+  collectionExplicitness: string;
+  contentAdvisoryRating?: string;
+  trackCount: number;
+  copyright: string;
+  country: string;
+  currency: number;
+  releaseDate: string;
+  primaryGenreName: string;
+}
+
 // Send GET request to REST APIs
 async function request_get(url: string): Promise<RequestResult>
 {
@@ -53,7 +86,7 @@ export default defineComponent({
   , data: () => { 
       return { 
             inputText: '' as string 
-          , data: {} as any 
+          , data: {} as ItunesTypes 
         , 
     }}
 
@@ -65,7 +98,10 @@ export default defineComponent({
            let url = `https://itunes.apple.com/search?term=${entry}&entity=album`;
            let result = await request_get(url);
            console.log(result.data);
-           this.data = result.data;
+           this.data = result.data as ItunesTypes;
+      }
+      , clear(){
+          this.inputText = "";
       }
   }
 
