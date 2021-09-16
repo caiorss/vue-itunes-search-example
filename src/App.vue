@@ -1,20 +1,25 @@
 <template>
-<div id="app">
-    <h1>Itunes album Search / Itunes API</h1>
-    <p><input type="text" v-on:keyup.enter="search()" v-model="inputText" /></p>
-    <br>
-    <button @click="search()">Search</button>
-    <button @click="clear()">Clear</button>
+<div id="app" class="container">
+    <h1 class="text-center text-uppercase" >Itunes album Search / Itunes API</h1>
+
+    <div class="container">
+      <p><input class="form-control" type="text" v-on:keyup.enter="search()" v-model="inputText" /></p>
+      <br>
+      <button class="btn btn-primary" @click="search()">Search</button>
+      <button class="btn btn-primary" @click="clear()">Clear</button>
+    </div>
 
     <hr>
 
+    <h2 class="text-center text-uppercase">Results</h2>
+    
     Results: {{ data.resultCount }}
 
-    <div v-for="entry in results" v-bind:key="entry">
+    <div class="container" v-for="entry in results" v-bind:key="entry">
          <h3> {{ entry.collectionName }} </h3>
 
          Artist name: {{ entry.artistName }} <br>
-         Collection: <a :href="entry.collectionViewUrl" target="_blank">{{ entry.collectionName }}</a>   <br> 
+         Collection: <a class="text-info" :href="entry.collectionViewUrl" target="_blank">{{ entry.collectionName }}</a>   <br> 
          Collection price: {{ entry.collectionPrice }} <br>
          Genre: {{ entry.primaryGenreName }} <br>
          Country: {{ entry.country }}
@@ -29,6 +34,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface RequestResult {
    res: Response;
@@ -115,7 +121,7 @@ export default defineComponent({
 </script>
 
 <style>
-  html {
+  body {
     background: black;
   }
   #app {
@@ -123,4 +129,16 @@ export default defineComponent({
       color: white;
 
   }
+
+  /* ----- Layout for Desktop Screens -------- */
+  @media only screen and (min-width: 600px) {
+      #app {
+          max-width: 800px; 
+          margin: 20px;
+          padding: 10px;
+          border-radius: 20px;
+      }
+  }
+
+
 </style>
